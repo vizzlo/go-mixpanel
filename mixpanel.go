@@ -32,7 +32,7 @@ const (
 // Client is a client to talk to the API
 type Client struct {
 	Token   string
-	BaseUrl string
+	BaseURL string
 	Client  http.Client
 }
 
@@ -50,7 +50,7 @@ type Operation struct {
 func New(token string) *Client {
 	return &Client{
 		Token:   token,
-		BaseUrl: apiBaseURL,
+		BaseURL: apiBaseURL,
 		Client: http.Client{
 			Timeout: 60 * time.Second,
 		},
@@ -134,7 +134,7 @@ func (m *Client) TrackingPixel(distinctID, event string, props Properties) (stri
 	for k, v := range params {
 		query[k] = []string{v}
 	}
-	return fmt.Sprintf("%s/%s?%s", m.BaseUrl, "track", query.Encode()), nil
+	return fmt.Sprintf("%s/%s?%s", m.BaseURL, "track", query.Encode()), nil
 }
 
 // RedirectURL returns a url that, when clicked, will track the given data and then redirect to provided url.
@@ -159,7 +159,7 @@ func (m *Client) RedirectURL(distinctID, event, uri string, props Properties) (s
 	for k, v := range params {
 		query[k] = []string{v}
 	}
-	return fmt.Sprintf("%s/%s?%s", m.BaseUrl, "track", query.Encode()), nil
+	return fmt.Sprintf("%s/%s?%s", m.BaseURL, "track", query.Encode()), nil
 }
 
 func (m *Client) makeRequest(method string, endpoint string, paramMap map[string]string) error {
@@ -173,7 +173,7 @@ func (m *Client) makeRequest(method string, endpoint string, paramMap map[string
 		return fmt.Errorf("endpoint missing")
 	}
 
-	endpoint = fmt.Sprintf("%s/%s", m.BaseUrl, endpoint)
+	endpoint = fmt.Sprintf("%s/%s", m.BaseURL, endpoint)
 
 	if paramMap == nil {
 		paramMap = map[string]string{}
