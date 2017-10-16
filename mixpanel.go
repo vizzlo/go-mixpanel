@@ -33,7 +33,7 @@ const (
 type Client struct {
 	Token   string
 	BaseURL string
-	Client  http.Client
+	Client  *http.Client
 }
 
 // Properties are key=value pairs that decorate an event or a profile.
@@ -51,8 +51,8 @@ func New(token string) *Client {
 	return &Client{
 		Token:   token,
 		BaseURL: apiBaseURL,
-		Client: http.Client{
-			Timeout: 60 * time.Second,
+		Client: &http.Client{
+			Timeout: 10 * time.Second,
 		},
 	}
 }
