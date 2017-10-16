@@ -2,6 +2,15 @@ package mixpanel
 
 import "testing"
 
+func TestRunningAsScriptWithoutDistinctID(t *testing.T) {
+	mp := New("abc")
+
+	err := mp.TrackAsScript("", "Some Event", nil)
+	if err == nil {
+		t.Errorf("Error expected here, but could successfully send event as as script without distinct_id")
+	}
+}
+
 func TestRedirectURL(t *testing.T) {
 	mp := New("abc")
 	props := Properties{

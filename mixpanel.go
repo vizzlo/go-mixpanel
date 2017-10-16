@@ -1,8 +1,10 @@
+// Package mixpanel is an unofficial Go client library for the services provided by MixPanel
 package mixpanel
 
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -69,9 +71,11 @@ func (m *Client) Track(distinctID string, event string, props Properties) error 
 	return m.makeRequestWithData("GET", "track", data, sourceUser)
 }
 
+// TrackAsScript sends event data on behalf of a specific user, without using the current
+// IP address for location determination.
 func (m *Client) TrackAsScript(distinctID string, event string, props Properties) error {
-	if distinctID != "" {
-		props["distinct_id"] = distinctID
+	if distinctID == "" {
+		return errors.New("No distinct_id specified.")
 	}
 	props["token"] = m.Token
 	props["mp_lib"] = library
