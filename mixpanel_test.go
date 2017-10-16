@@ -3,7 +3,7 @@ package mixpanel
 import "testing"
 
 func TestRedirectURL(t *testing.T) {
-	mp := NewMixpanel("abc")
+	mp := New("abc")
 	props := Properties{
 		"a": "apples",
 		"b": "bananas",
@@ -25,7 +25,7 @@ func TestRedirectURL(t *testing.T) {
 }
 
 func TestTrackingPixel(t *testing.T) {
-	mp := NewMixpanel("abc")
+	mp := New("abc")
 	props := Properties{
 		"a": "apples",
 		"b": "bananas",

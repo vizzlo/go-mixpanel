@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/timehop/go-mixpanel"
+	"github.com/vizzlo/mixpanel"
 )
 
 func usage() {
@@ -36,7 +36,7 @@ func main() {
 		}
 	}
 
-	mp := mixpanel.NewMixpanel(token)
+	mp := mixpanel.New(token)
 	err := mp.Track(distinctID, event, props)
 	if err != nil {
 		fmt.Println("Error occurred:", err)

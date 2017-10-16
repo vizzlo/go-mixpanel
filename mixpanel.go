@@ -29,8 +29,8 @@ const (
 	sourceScript
 )
 
-// Mixpanel is a client to talk to the API
-type Mixpanel struct {
+// Client is a client to talk to the API
+type Client struct {
 	Token   string
 	BaseUrl string
 	Client  http.Client
@@ -46,9 +46,9 @@ type Operation struct {
 	Values Properties
 }
 
-// NewMixpanel returns a configured client.
-func NewMixpanel(token string) *Mixpanel {
-	return &Mixpanel{
+// New returns a configured client.
+func New(token string) *Client {
+	return &Client{
 		Token:   token,
 		BaseUrl: apiBaseURL,
 		Client: http.Client{
@@ -58,7 +58,7 @@ func NewMixpanel(token string) *Mixpanel {
 }
 
 // Track sends event data with optional metadata.
-func (m *Mixpanel) Track(distinctID string, event string, props Properties) error {
+func (m *Client) Track(distinctID string, event string, props Properties) error {
 	if distinctID != "" {
 		props["distinct_id"] = distinctID
 	}
@@ -69,7 +69,7 @@ func (m *Mixpanel) Track(distinctID string, event string, props Properties) erro
 	return m.makeRequestWithData("GET", "track", data, sourceUser)
 }
 
-func (m *Mixpanel) TrackAsScript(distinctID string, event string, props Properties) error {
+func (m *Client) TrackAsScript(distinctID string, event string, props Properties) error {
 	if distinctID != "" {
 		props["distinct_id"] = distinctID
 	}
@@ -84,16 +84,16 @@ func (m *Mixpanel) TrackAsScript(distinctID string, event string, props Properti
 // This will update the IP and related data on the profile.
 // If you don't have the IP address of the user, then use the UpdateProperties method instead,
 // otherwise the user's location will be set to wherever the script was run from.
-func (m *Mixpanel) Engage(distinctID string, props Properties, op *Operation) error {
+func (m *Client) Engage(distinctID string, props Properties, op *Operation) error {
 	return m.engage(distinctID, props, op, sourceUser)
 }
 
 // EngageAsScript calls the engage endpoint, but doesn't set IP, city, country, on the profile.
-func (m *Mixpanel) EngageAsScript(distinctID string, props Properties, op *Operation) error {
+func (m *Client) EngageAsScript(distinctID string, props Properties, op *Operation) error {
 	return m.engage(distinctID, props, op, sourceScript)
 }
 
-func (m *Mixpanel) engage(distinctID string, props Properties, op *Operation, as actionSource) error {
+func (m *Client) engage(distinctID string, props Properties, op *Operation, as actionSource) error {
 	if distinctID != "" {
 		props["$distinct_id"] = distinctID
 	}
@@ -113,7 +113,7 @@ func (m *Mixpanel) engage(distinctID string, props Properties, op *Operation, as
 }
 
 // TrackingPixel returns a url that, when clicked, will track the given data and then redirect to provided url.
-func (m *Mixpanel) TrackingPixel(distinctID, event string, props Properties) (string, error) {
+func (m *Client) TrackingPixel(distinctID, event string, props Properties) (string, error) {
 	if distinctID != "" {
 		props["$distinct_id"] = distinctID
 	}
@@ -138,7 +138,7 @@ func (m *Mixpanel) TrackingPixel(distinctID, event string, props Properties) (st
 }
 
 // RedirectURL returns a url that, when clicked, will track the given data and then redirect to provided url.
-func (m *Mixpanel) RedirectURL(distinctID, event, uri string, props Properties) (string, error) {
+func (m *Client) RedirectURL(distinctID, event, uri string, props Properties) (string, error) {
 	if distinctID != "" {
 		props["$distinct_id"] = distinctID
 	}
@@ -162,7 +162,7 @@ func (m *Mixpanel) RedirectURL(distinctID, event, uri string, props Properties) 
 	return fmt.Sprintf("%s/%s?%s", m.BaseUrl, "track", query.Encode()), nil
 }
 
-func (m *Mixpanel) makeRequest(method string, endpoint string, paramMap map[string]string) error {
+func (m *Client) makeRequest(method string, endpoint string, paramMap map[string]string) error {
 	var (
 		err error
 		req *http.Request
@@ -218,7 +218,7 @@ func (m *Mixpanel) makeRequest(method string, endpoint string, paramMap map[stri
 	return nil
 }
 
-func (m *Mixpanel) makeRequestWithData(method string, endpoint string, data Properties, as actionSource) error {
+func (m *Client) makeRequestWithData(method string, endpoint string, data Properties, as actionSource) error {
 	b, err := json.Marshal(data)
 	if err != nil {
 		return err
