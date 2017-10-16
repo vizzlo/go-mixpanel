@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 const (
@@ -32,6 +33,7 @@ const (
 type Mixpanel struct {
 	Token   string
 	BaseUrl string
+	Client  http.Client
 }
 
 // Properties are key=value pairs that decorate an event or a profile.
@@ -49,6 +51,9 @@ func NewMixpanel(token string) *Mixpanel {
 	return &Mixpanel{
 		Token:   token,
 		BaseUrl: apiBaseURL,
+		Client: http.Client{
+			Timeout: 60 * time.Second,
+		},
 	}
 }
 
@@ -185,7 +190,7 @@ func (m *Mixpanel) makeRequest(method string, endpoint string, paramMap map[stri
 		return err
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := m.Client.Do(req)
 	if err != nil {
 		return err
 	}
