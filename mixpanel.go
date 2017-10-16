@@ -69,6 +69,17 @@ func (m *Mixpanel) Track(distinctID string, event string, props Properties) erro
 	return m.makeRequestWithData("GET", "track", data, sourceUser)
 }
 
+func (m *Mixpanel) TrackAsScript(distinctID string, event string, props Properties) error {
+	if distinctID != "" {
+		props["distinct_id"] = distinctID
+	}
+	props["token"] = m.Token
+	props["mp_lib"] = library
+
+	data := map[string]interface{}{"event": event, "properties": props}
+	return m.makeRequestWithData("GET", "track", data, sourceScript)
+}
+
 // Engage updates profile data.
 // This will update the IP and related data on the profile.
 // If you don't have the IP address of the user, then use the UpdateProperties method instead,
