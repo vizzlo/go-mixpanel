@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	apiBaseURL = "http://api.mixpanel.com"
+	apiBaseURL = "https://api.mixpanel.com"
 	library    = "vizzlo/mixpanel"
 )
 
