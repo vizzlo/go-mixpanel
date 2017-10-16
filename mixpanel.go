@@ -13,7 +13,7 @@ import (
 
 const (
 	apiBaseURL = "http://api.mixpanel.com"
-	library    = "timehop/go-mixpanel"
+	library    = "vizzlo/mixpanel"
 )
 
 // actionSource describes where the call is originating from.
