@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/vizzlo/mixpanel"
+	"vizzlo.com/mixpanel"
 )
 
 func usage() {
