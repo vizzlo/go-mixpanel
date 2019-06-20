@@ -127,7 +127,7 @@ func mapStr(input []string, mapFunc func(input string) string) []string {
 }
 
 func addQuotes(input string) string {
-	return `"` + strings.ReplaceAll(input, `"`, `\"`) + `"`
+	return `"` + strings.Replace(input, `"`, `\"`, -1) + `"`
 }
 
 func (c *ExportClient) ListProfiles(q *ProfileQuery) ([]Profile, error) {
