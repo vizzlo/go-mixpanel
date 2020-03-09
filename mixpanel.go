@@ -223,7 +223,6 @@ func (m *Client) makeRequest(method string, endpoint string, paramMap map[string
 			endpoint = endpoint + "?" + enc
 		}
 	case "POST":
-		fmt.Println(params.Encode())
 		r = strings.NewReader(params.Encode())
 	default:
 		return fmt.Errorf("method not supported: %v", method)
