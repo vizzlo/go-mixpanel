@@ -62,9 +62,8 @@ func TestTrackingPixel(t *testing.T) {
 	}
 }
 
-type testTransportFn = func(req *http.Request) *http.Response
 type testTransport struct {
-	f testTransportFn
+	f func(req *http.Request) *http.Response
 }
 
 func (t *testTransport) RoundTrip(req *http.Request) (*http.Response, error) {
