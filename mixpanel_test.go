@@ -70,6 +70,10 @@ func (t *testTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return t.f(req), nil
 }
 
+// go 1.5 needs this
+func (t *testTransport) CancelRequest(req *http.Request) {
+}
+
 func TestTrackingBatch(t *testing.T) {
 	testTransportFn := func(req *http.Request) *http.Response {
 		b, err := ioutil.ReadAll(req.Body)
