@@ -6,7 +6,7 @@
 [![Go Report Card](https://goreportcard.com/badge/vizzlo.com/mixpanel)](https://goreportcard.com/report/vizzlo.com/mixpanel)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-- Latest version: 1.1.0
+- Latest version: 1.2.0
 - Supported Go versions: 1.5 … 1.14
 
 This is an unofficial client for the Mixpanel [event tracking](https://developer.mixpanel.com/docs/http) and
