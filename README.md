@@ -1,5 +1,4 @@
-MixPanel
-========
+# MixPanel
 
 [![GoDoc](https://godoc.org/vizzlo.com/mixpanel?status.png)](https://godoc.org/vizzlo.com/mixpanel)
 [![Build Status](https://travis-ci.org/vizzlo/mixpanel.svg?branch=master)](https://travis-ci.org/vizzlo/mixpanel)
@@ -8,7 +7,7 @@ MixPanel
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 - Latest version: 1.1.0
-- Supported Go versions: 1.5 … 1.12
+- Supported Go versions: 1.5 … 1.14
 
 This is an unofficial client for the Mixpanel [event tracking](https://developer.mixpanel.com/docs/http) and
 [data export API](https://developer.mixpanel.com/docs/data-export-api)s.
