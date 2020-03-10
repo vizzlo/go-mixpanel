@@ -48,15 +48,43 @@ type Operation struct {
 	Values Properties
 }
 
+type BatchEvent struct {
+	DistinctID string     `json:"-"`
+	Event      string     `json:"event"`
+	Props      Properties `json:"properties"`
+}
+
 // New returns a configured client.
 func New(token string) *Client {
+	return newWithTransport(token, nil)
+}
+
+func newWithTransport(token string, transport http.RoundTripper) *Client {
 	return &Client{
 		Token:   token,
 		BaseURL: apiBaseURL,
 		Client: &http.Client{
-			Timeout: 10 * time.Second,
+			Timeout:   10 * time.Second,
+			Transport: transport,
 		},
 	}
+}
+
+var MaxBatchSizeErr = errors.New("max batch size is 50")
+
+func (m *Client) TrackBatch(events []BatchEvent) error {
+	if len(events) > 50 {
+		return MaxBatchSizeErr
+	}
+
+	for _, e := range events {
+		if e.DistinctID != "" {
+			e.Props["distinct_id"] = e.DistinctID
+		}
+		e.Props["token"] = m.Token
+		e.Props["mp_lib"] = library
+	}
+	return m.makeRequestWithData("POST", "track", events, sourceUser)
 }
 
 // Track sends event data with optional metadata.
@@ -205,6 +233,10 @@ func (m *Client) makeRequest(method string, endpoint string, paramMap map[string
 		return err
 	}
 
+	if method == "POST" {
+		req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	}
+
 	resp, err := m.Client.Do(req)
 	if err != nil {
 		return err
@@ -222,7 +254,7 @@ func (m *Client) makeRequest(method string, endpoint string, paramMap map[string
 	return nil
 }
 
-func (m *Client) makeRequestWithData(method string, endpoint string, data Properties, as actionSource) error {
+func (m *Client) makeRequestWithData(method string, endpoint string, data interface{}, as actionSource) error {
 	b, err := json.Marshal(data)
 	if err != nil {
 		return err
